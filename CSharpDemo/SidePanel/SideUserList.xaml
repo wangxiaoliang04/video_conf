@@ -1,0 +1,395 @@
+﻿<UserControl x:Class="VenueRtcWpf.SideUserList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:sr="clr-namespace:VenueRtcWpf.Resources"
+             xmlns:sb="clr-namespace:VenueRtcWpf.Resources.Controls.CButton"
+             xmlns:cmd="clr-namespace:VenueRtcWpf.Command"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:cvt="clr-namespace:VenueRtcWpf.Resources.Converter"
+             xmlns:local="clr-namespace:VenueRtcWpf"
+             xmlns:rs="clr-namespace:VenueRtcWpf.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <DockPanel Background="White">
+        <DockPanel.Resources>
+            <cvt:DoubleOffsetConverter x:Key="DoubleOffsetConverter"></cvt:DoubleOffsetConverter>
+        </DockPanel.Resources>
+        <Grid Height="auto" DockPanel.Dock="Bottom" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <sb:StateButton Height="30" x:Name="btn_toggle_voice" sr:PropertyManager.CornerRadius="4" Visibility="Visible" ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=CurrentState}"
+                            CurrentState="全体静音" Width="auto" Margin="6 10" TextElement.FontSize="12" Padding="12 0">
+                <sb:StateButton.StateControl>
+                    <sb:StateButtonStateControl>
+                        <sb:StateButtonStateControl.Parameters>
+                            <sb:Parameter  TextDisplay="全体静音" TheState="全体静音" TheCommand="{x:Static cmd:MainWindowCommand.ToggleAllVoice}" TheImageSource="/VenueRtc;component/image/chat@2x.png" Background="{DynamicResource VenueRtcWpf.Gray6}" BackgroundAlter="#E6E6EB"></sb:Parameter>
+                            <sb:Parameter  TextDisplay="取消全体静音" TheState="取消全体静音" TheCommand="{x:Static cmd:MainWindowCommand.ToggleAllVoice}" TheImageSource="/VenueRtc;component/image/chat@2x.png" Background="{DynamicResource VenueRtcWpf.Red3}" BackgroundAlter="{DynamicResource VenueRtcWpf.Red4}"></sb:Parameter>
+                        </sb:StateButtonStateControl.Parameters>
+                    </sb:StateButtonStateControl>
+                </sb:StateButton.StateControl>
+                <sb:StateButton.Style>
+                    <Style TargetType="sb:StateButton" BasedOn="{StaticResource {x:Type sb:StateButton}}">
+
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BackgroundColor" Value="{StaticResource VenueRtcWpf.Gray6}"/>
+                        <Setter Property="BackgroundHighlight" Value="#E6E6EB"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Template" Value="{x:Null}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self},Path=CurrentState,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="全体静音">
+                                <Setter Property="Template" Value="{DynamicResource GrayStyle}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self},Path=CurrentState,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="取消全体静音">
+                                <Setter Property="Template" Value="{DynamicResource RedStyle}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="assistant">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="anchor">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </sb:StateButton.Style>
+            </sb:StateButton>
+            <local:ImageToggleButton x:Name="muteBtn" Height="30" Margin="0, 0, 20, 0" Visibility="Collapsed"
+                     HorizontalAlignment="Right" Checked="AllMuteBtn_Click" Unchecked="AllMuteBtn_Click"
+                     TextNormal="全体静音" TextChecked="取消全体静音">
+                <local:ImageToggleButton.Style>
+                    <Style TargetType="local:ImageToggleButton">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type local:ImageToggleButton}">
+                                    <Border x:Name="ButtonBorder"
+                            BorderThickness="0"
+                            Background="#186A89AB"
+                            CornerRadius="5"
+                            Padding="10, 0, 10, 0">
+                                        <Grid VerticalAlignment="Center">
+                                            <TextBlock x:Name="Text" Text="{Binding TextNormal, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="Text" Property="Text" Value="{Binding TextChecked, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ButtonRedBrush}" />
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </local:ImageToggleButton.Style>
+            </local:ImageToggleButton>
+                <Button x:Name="btnDock" Margin="6 10"
+                    VerticalAlignment="Bottom" Width="71" Height="30" 
+                            BorderThickness="0"
+                        Background="#F2F2F7"
+                         rs:PropertyManager.BackgroundHighlight="#E9F0FD"
+                            rs:PropertyManager.ForegroundHighlight="#393A4E"
+                            ToolTip="右侧停靠" Click="BtnDock_Click" >
+                    <Button.Content>
+                        <BulletDecorator HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="RightToLeft" Margin="0">
+                            <BulletDecorator.Bullet>
+                                <Path Fill="#5E5E70" Height="4.195" Width="8" Stretch="UniformToFill"  Data="M1.0652986,4.3232759 L6.1287313,9.0646552 C7.1275642,9.9735089 8.1180152,9.9120551 9.1007461,8.956897 L14.134777,4.2780576 C14.314676,2.7109945 13.745972,2.1475846 12.373583,2.6616782 L7.669776,7.125 2.9365672,2.5991378 C1.53084,2.346807 0.81890103,2.9789056 1.0652986,4.3232759 z"></Path>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="6 0 14 0">更多</TextBlock>
+                        </BulletDecorator>
+                    </Button.Content>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="停靠/独立弹出" Click="MenuItem_Click"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                    
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Rectangle Height="0" Fill="LightGray" DockPanel.Dock="Bottom"/>
+        <ScrollViewer MinWidth="200" Background="{DynamicResource TransparentBrush}" Foreground="#39394F" BorderThickness="0" Style="{StaticResource for_scrollviewer}" 
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Focusable="False">
+
+
+            <ItemsControl x:Name="userList" MinWidth="200" Background="{DynamicResource TransparentBrush}" Foreground="Black" BorderThickness="0" 
+                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                        <Grid x:Name="bgGrid" Height="50" >
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F2F2F7"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!--<Image Grid.Column="0" Source="{Binding Avatar}" Width="30" Height="30" Margin="20,-1,8,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
+                            <Ellipse  Grid.Column="0" Fill="#63a0ff" Width="30" Height="30" Margin="20,-1,8,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                
+                            </Ellipse>
+                            <Label Content="{Binding Nickname[0]}" Grid.Column="0" Foreground="White" FontSize="15" FontFamily="微软雅黑" SnapsToDevicePixels="True"
+                                   Width="30" Height="30" Margin="20,-1,8,0" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                            <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  ToolTip="{Binding Nickname}" TextTrimming="CharacterEllipsis" TextElement.FontSize="13" VerticalAlignment="Center" Margin="0 2 0 0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=ActualWidth,Converter={StaticResource DoubleOffsetConverter},ConverterParameter=-150}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAnchor}" Value="True">
+                                                        <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=ActualWidth,Converter={StaticResource DoubleOffsetConverter},ConverterParameter=-200}"/>
+
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsUserSelf}" Value="True">
+                                                        <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=ActualWidth,Converter={StaticResource DoubleOffsetConverter},ConverterParameter=-200}"/>
+
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    <Run Text="{Binding Nickname}"  Foreground="{Binding NameColor}"></Run>
+                                    </TextBlock>
+                                    <TextBlock  FontSize="13" VerticalAlignment="Center" Grid.Column="1" Margin="0 2 0 0">
+                                    <Run Foreground="#A1A1AD">
+                                    <Run.Style>
+                                        <Style TargetType="Run">
+                                            <Setter Property="Text" Value=""/>
+                                        <Style.Triggers>
+                                            
+                                            <DataTrigger Binding="{Binding IsUserSelf}" Value="True">
+                                                    <Setter Property="Text" Value="(我)"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsAnchor}" Value="True">
+                                                    <Setter Property="Text" Value="(主播)"/>
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsAnchor}" Value="True"></Condition>
+                                                    <Condition Binding="{Binding IsUserSelf}" Value="True"></Condition>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="(主播/我)"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    </Run.Style>
+                                </Run>
+                                </TextBlock>
+                            </Grid>
+                           
+                            <sb:StateButton  Height="48" Width="46"  Grid.Column="2" Cursor="Hand"
+                                            CurrentState="{Binding StateVoice ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
+                                <sb:StateButton.Resources>
+                                    <Style TargetType="{x:Type sb:StateButton}" >
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Setter Property="Height" Value="55"/>
+                                        <Setter Property="StateControl">
+                                            <Setter.Value>
+                                                <sb:StateButtonStateControl x:Name="Part_Param">
+                                                    <sb:StateButtonStateControl.Parameters>
+                                                        <sb:Parameter  TextDisplay="None" TheCommand="{x:Null}" TheImageSource="{x:Null}"></sb:Parameter>
+
+                                                    </sb:StateButtonStateControl.Parameters>
+                                                </sb:StateButtonStateControl>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="DefaultParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0]}" />
+                                        <Setter Property="CurrentState" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0].TheState}"/>
+                                        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0].TheCommand}"/>
+                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self},Path=CurrentState}" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="sb:StateButton">
+                                                    <Grid x:Name="Part_Grid" Background="Transparent">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*"></RowDefinition>
+                                                            <RowDefinition Height="0"></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Border VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2">
+                                                            <Grid>
+                                                                <Image Style="{x:Null}" Height="24" Width="24" x:Name="Part_Image" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="True" Visibility="Visible"/>
+                                                                <Image Style="{x:Null}" Height="24" Width="24" x:Name="Part_Image_Alter" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="True" Visibility="Collapsed"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <Border Grid.Row="1">
+                                                            <TextBlock x:Name="Part_Text" Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CurrentState}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                                                        </Border>
+                                                        <ContentPresenter></ContentPresenter>
+
+                                                        <!--<VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualState x:Name="Normal">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0.5" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" From="{DynamicResource VenueRtcWpf.Gray1}" To="{DynamicResource VenueRtcWpf.Gray1_Tr}"></ColorAnimation>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" BeginTime="0:0:0.5" From="{DynamicResource VenueRtcWpf.Gray1_Tr}" To="{DynamicResource VenueRtcWpf.Transparent}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" To="{DynamicResource VenueRtcWpf.Gray1}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Pressed">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" To="{DynamicResource VenueRtcWpf.Gray1}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>-->
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Part_Image" Property="Visibility" Value="Collapsed"></Setter>
+                                                        <Setter TargetName="Part_Image_Alter" Property="Visibility" Value="Visible"></Setter>
+                                                    </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:SideUserList}, Path=DataContext.UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="assistant">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:SideUserList}, Path=DataContext.UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="anchor">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </sb:StateButton.Resources>
+                                <sb:StateButton.StateControl>
+                                    <sb:StateButtonStateControl Visibility="Collapsed">
+                                        <sb:StateButtonStateControl.Parameters>
+                                            <sb:Parameter  TextDisplay="静音" TheState="静音" TheCommand="{x:Static cmd:MainWindowCommand.ToggleVoice}" TheImageSource="/VenueRtc;component/image/item_mic@2x.png" TheAlterImageSource="/VenueRtc;component/image/item_mic_highlight@2x.png"></sb:Parameter>
+                                            <sb:Parameter  TextDisplay="解除静音" TheState="解除静音" TheCommand="{x:Static cmd:MainWindowCommand.ToggleVoice}" TheImageSource="/VenueRtc;component/image/item_mic_no@2x.png" TheAlterImageSource="/VenueRtc;component/image/item_mic_no_highlight@2x.png"></sb:Parameter>
+                                        </sb:StateButtonStateControl.Parameters>
+                                    </sb:StateButtonStateControl>
+                                </sb:StateButton.StateControl>
+                            </sb:StateButton>
+                            <sb:StateButton  Height="48" Width="46"  Grid.Column="3" Cursor="Hand"
+                                            CurrentState="{Binding StateVedio,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
+                                <sb:StateButton.Resources>
+                                    <Style TargetType="{x:Type sb:StateButton}" >
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Setter Property="Height" Value="55"/>
+                                        <Setter Property="StateControl">
+                                            <Setter.Value>
+                                                <sb:StateButtonStateControl x:Name="Part_Param">
+                                                    <sb:StateButtonStateControl.Parameters>
+                                                        <sb:Parameter  TextDisplay="None" TheCommand="{x:Null}" TheImageSource="{x:Null}"></sb:Parameter>
+
+                                                    </sb:StateButtonStateControl.Parameters>
+                                                </sb:StateButtonStateControl>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="DefaultParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0]}" />
+                                        <Setter Property="CurrentState" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0].TheState}"/>
+                                        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StateControl.Parameters[0].TheCommand}"/>
+                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self},Path=CurrentState}" />
+                                        <Setter Property="sb:Parameter.TheAlterImageSource" Value="/VenueRtc;component/image/item_camera_highlight@2x.png"/>
+                                        <Setter Property="sb:Parameter.TheImageSource" Value="/VenueRtc;component/image/item_camera@2x.png"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="sb:StateButton">
+                                                    <Grid x:Name="Part_Grid" Background="Transparent">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*"></RowDefinition>
+                                                            <RowDefinition Height="0"></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Border VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2">
+                                                            <Grid>
+                                                                <Image Style="{x:Null}" Height="24" Width="24" x:Name="Part_Image" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="True" Visibility="Visible"/>
+                                                                <Image Style="{x:Null}" Height="24" Width="24" x:Name="Part_Image_Alter" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="True" Visibility="Collapsed"/>
+                                                            </Grid>
+
+                                                        </Border>
+                                                        <Border Grid.Row="1">
+                                                            <TextBlock x:Name="Part_Text" Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CurrentState}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                                                        </Border>
+                                                        <ContentPresenter></ContentPresenter>
+
+                                                        <!--<VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualState x:Name="Normal">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0.5" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" From="{DynamicResource VenueRtcWpf.Gray1}" To="{DynamicResource VenueRtcWpf.Gray1_Tr}"></ColorAnimation>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" BeginTime="0:0:0.5" From="{DynamicResource VenueRtcWpf.Gray1_Tr}" To="{DynamicResource VenueRtcWpf.Transparent}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" To="{DynamicResource VenueRtcWpf.Gray1}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Pressed">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0:0:0" Storyboard.TargetName="Part_Grid" Storyboard.TargetProperty="Background.Color" To="{DynamicResource VenueRtcWpf.Gray1}"></ColorAnimation>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>-->
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Part_Image" Property="Visibility" Value="Collapsed"></Setter>
+                                                            <Setter TargetName="Part_Image_Alter" Property="Visibility" Value="Visible"></Setter>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:SideUserList}, Path=DataContext.UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="assistant">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:SideUserList}, Path=DataContext.UserRole,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Value="anchor">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </sb:StateButton.Resources>
+                                <sb:StateButton.StateControl>
+                                    <sb:StateButtonStateControl Visibility="Collapsed">
+                                        <sb:StateButtonStateControl.Parameters>
+                                            <sb:Parameter  TextDisplay="禁用视频" TheState="禁用视频" TheCommand="{x:Static cmd:MainWindowCommand.ToggleCam}" TheImageSource="/VenueRtc;component/image/item_camera@2x.png" TheAlterImageSource="/VenueRtc;component/image/item_camera_highlight@2x.png"></sb:Parameter>
+                                            <sb:Parameter  TextDisplay="开启视频" TheState="开启视频" TheCommand="{x:Static cmd:MainWindowCommand.ToggleCam}" TheImageSource="/VenueRtc;component/image/item_camera_no@2x.png" TheAlterImageSource="/VenueRtc;component/image/item_camera_no_highlight@2x.png"></sb:Parameter>
+                                        </sb:StateButtonStateControl.Parameters>
+                                    </sb:StateButtonStateControl>
+                                </sb:StateButton.StateControl>
+                            </sb:StateButton>
+                        </Grid>
+                    <DataTemplate.Triggers>
+                        <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                            <Setter TargetName="bgGrid" Property="Background" Value="#186A89AB"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                            <Setter TargetName="bgGrid" Property="Background" Value="#0A6A89AB"/>
+                        </DataTrigger>-->
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+            
+            
+        </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,36 @@
+﻿<Window x:Class="VenueRtcWpf.SidePopWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
+        xmlns:local="clr-namespace:VenueRtcWpf"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                   xmlns:wind="clr-namespace:VenueRtcWpf.Resources.Controls.StyleableWindow"
+        mc:Ignorable="d"
+        Height="520" Width="452" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"  ShowInTaskbar="False" Background="Transparent" AllowsTransparency="False" 
+                   
+                   
+                   Loaded="MetroWindow_Loaded"
+                   >
+    <!--WindowCloseButtonStyle="{StaticResource WindowButtonMinMaxNormal}"
+                   WindowMaxButtonStyle="{StaticResource WindowButtonMinMaxNormal}"
+                   WindowMinButtonStyle="{StaticResource WindowButtonMinMaxNormal}"
+                  Style="{StaticResource MetroWindow.Popup.Style}"-->
+    <!--<metro:MetroWindow.WindowButtonCommands>
+        <wind:WindowButtonCommandsEx></wind:WindowButtonCommandsEx>
+    </metro:MetroWindow.WindowButtonCommands>
+    <metro:MetroWindow.Resources>-->
+        <!--<Style BasedOn="{StaticResource MahApps.Metro.Styles.WindowButtonCommands}" TargetType="{x:Type wind:WindowButtonCommandsEx}" >
+            
+        </Style>-->
+        <!--<Style TargetType="{x:Type metro:MetroWindow}" BasedOn="{StaticResource MetroWindow.Popup.Style}">
+            <Setter Property="WindowButtonCommands">
+                <Setter.Value>
+                    <wind:WindowButtonCommandsEx></wind:WindowButtonCommandsEx>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    <!--</metro:MetroWindow.Resources>-->
+    
+</Window>

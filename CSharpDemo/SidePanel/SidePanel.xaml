@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="VenueRtcWpf.SidePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:VenueRtcWpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300">
+    <Grid x:Name="mainGrid" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Canvas x:Name="userHeader" Grid.Row="0" Height="54" Background="White">
+            <Grid Width="{Binding ActualWidth, ElementName=userHeader}" Height="{Binding ActualHeight, ElementName=userHeader}">
+                <TextBlock x:Name="userTitle" Text="参会者(0)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+            <StackPanel Canvas.Right="0" Height="{Binding ActualHeight, ElementName=userHeader}" Orientation="Horizontal" >
+                <local:ImageToggleButton x:Name="usersHideToggle" Width="32" Style="{StaticResource CaptionToggleButton}" Checked="HideUserList_Click" Unchecked="HideUserList_Click"
+                             IconNormal="/VenueRtc;component/image/side_min.png" IconChecked="/VenueRtc;component/image/side_normal.png"/>
+                <local:ImageButton Width="32" Style="{DynamicResource CaptionButton}" Click="UserWin_Click"
+                             IconNormal="/VenueRtc;component/image/side_window.png" IconMouseOver="/VenueRtc;component/image/side_window.png"/>
+                <local:ImageButton Width="32" Style="{DynamicResource CaptionButton}" Click="Close_Click"
+                             IconNormal="/VenueRtc;component/image/side_close.png" IconMouseOver="/VenueRtc;component/image/side_close.png"/>
+            </StackPanel>
+        </Canvas>
+        <Grid x:Name="userContent" Grid.Row="1"/>
+        <Canvas x:Name="chatHeader" Grid.Row="2" Height="54" Background="White">
+            <Rectangle Height="1" Fill="LightGray" Width="{Binding ActualWidth, ElementName=chatHeader}"  />
+            <Grid Width="{Binding ActualWidth, ElementName=chatHeader}" Height="{Binding ActualHeight, ElementName=chatHeader}">
+                <TextBlock x:Name="chatTitle" Text="聊天" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+            <StackPanel Canvas.Right="0" Height="{Binding ActualHeight, ElementName=chatHeader}" Orientation="Horizontal" >
+                <local:ImageToggleButton x:Name="chatHideToggle" Width="32" Style="{DynamicResource CaptionToggleButton}" Checked="HideChatList_Click" Unchecked="HideChatList_Click"
+                             IconNormal="/VenueRtc;component/image/side_min.png" IconChecked="/VenueRtc;component/image/side_normal.png"/>
+                <local:ImageButton Width="32" Style="{DynamicResource CaptionButton}" Click="ChatWin_Click"
+                             IconNormal="/VenueRtc;component/image/side_window.png" IconMouseOver="/VenueRtc;component/image/side_window.png"/>
+                <local:ImageButton Width="32" Style="{DynamicResource CaptionButton}" Click="Close_Click"
+                             IconNormal="/VenueRtc;component/image/side_close.png" IconMouseOver="/VenueRtc;component/image/side_close.png"/>
+            </StackPanel>
+        </Canvas>
+        <Grid x:Name="chatContent" Grid.Row="3"/>
+    </Grid>
+</UserControl>
